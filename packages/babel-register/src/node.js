@@ -12,7 +12,7 @@ sourceMapSupport.install({
   handleUncaughtExceptions: false,
   environment : "node",
   retrieveSourceMap(source) {
-    let map = maps && maps[source];
+    const map = maps && maps[source];
     if (map) {
       return {
         url: null,
@@ -27,15 +27,14 @@ sourceMapSupport.install({
 registerCache.load();
 let cache = registerCache.get();
 
-let transformOpts = {};
+const transformOpts = {};
 
 let ignore;
 let only;
-
 let piratesRevert = null;
 let maps = {};
 
-let cwd = process.cwd();
+const cwd = process.cwd();
 
 function getRelativePath(filename) {
   return path.relative(cwd, filename);
@@ -49,7 +48,7 @@ function compile(code, filename) {
   let result;
 
   // merge in base options and resolve all the plugins and presets relative to this file
-  let opts = new OptionManager().init(extend(
+  const opts = new OptionManager().init(extend(
     { sourceRoot: path.dirname(filename) }, // sourceRoot can be overwritten
     deepClone(transformOpts),
     { filename }
@@ -57,11 +56,11 @@ function compile(code, filename) {
 
   let cacheKey = `${JSON.stringify(opts)}:${babel.version}`;
 
-  let env = process.env.BABEL_ENV || process.env.NODE_ENV;
+  const env = process.env.BABEL_ENV || process.env.NODE_ENV;
   if (env) cacheKey += `:${env}`;
 
   if (cache) {
-    let cached = cache[cacheKey];
+    const cached = cache[cacheKey];
     if (cached && cached.mtime === mtime(filename)) {
       result = cached;
     }

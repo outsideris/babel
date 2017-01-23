@@ -264,12 +264,15 @@ export function ObjectTypeAnnotation(node: Object) {
     this.token("{");
   }
 
-  let props = node.properties.concat(node.callProperties, node.indexers);
+  const props = node.properties.concat(node.callProperties, node.indexers);
 
   if (props.length) {
     this.space();
 
     this.printJoin(props, node, {
+      addNewlines(leading) {
+        if (leading && !props[0]) return 1;
+      },
       indent: true,
       statement: true,
       iterator: () => {
